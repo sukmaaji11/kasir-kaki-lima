@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:17
+    container_name: kasir-kaki-lima-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: kasir_kaki_lima
+      POSTGRES_USER: kasir_app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    ports:
+      - '127.0.0.1:5433:5432'
+    volumes:
+      - kasir_kaki_lima_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U kasir_app -d kasir_kaki_lima']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  kasir_kaki_lima_data:
